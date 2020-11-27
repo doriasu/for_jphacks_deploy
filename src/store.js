@@ -58,7 +58,6 @@ const store = new Vuex.Store({
             state.file_length = {};
             state.file_data = {};
             state.nowfilter = "allpass";
-            state.filter_list = ["allpass","highpass","lowpass"];
             state.recorded_buf = {};
             state.twi_url = "";
 
@@ -188,7 +187,6 @@ const store = new Vuex.Store({
             delete state.file_data[param["file_name"]];
             delete state.file_length[param["file_name"]];
             state.lanes_for_html["audio"] = state.lanes_for_html["audio"].filter(file=>file!==file_name);
-            
         },
         delete_recorded(state,param){
             let file_name = param['file_name'];
