@@ -2,7 +2,7 @@ var input_options = new Vue({
     store: store,
     el: "#input_options",
     data:{
-        recording_state: false
+        recording_state: false,
     },
     methods:{
         shosetu_henshu: function(event){
@@ -44,6 +44,7 @@ var input_options = new Vue({
                     let put_param = {"fileName":String(file_list[i].name),"roomName":document.getElementById("roomID").value,"soundType":"audio","base64Data":base64EncodedFile};
                     console.log(put_url)
                     console.log(put_param)
+                    now.$store.commit("edit_nowplaying",{"nowplaying":"audio"});
                     axios.post(put_url, put_param).then(res=>{console.log(res);console.log("hellooooo")});
                     //base64decode
                     // let binary = atob(base64EncodedFile);
@@ -72,15 +73,22 @@ var input_options = new Vue({
         record_start_btn: function(e){
             document.record_start();
             this.recording_state=true;
+            document.getElementById("record_add_btn").setAttribute("disabled","");
+            document.getElementById("record_play_btn").setAttribute("disabled","");    
         },
         record_stop_btn: function(e){
             document.record_stop();
             this.recording_state=false;
+            document.getElementById("record_add_btn").removeAttribute("disabled");
+            document.getElementById("record_play_btn").removeAttribute("disabled");
         },
         record_play_btn: function(e){
             document.record_play();
         },
         record_add_btn: function(e){
+            document.getElementById("record_add_btn").setAttribute("disabled","");
+            document.getElementById("record_play_btn").setAttribute("disabled","");    
+            
             let recorded_buf = document.return_buf();
             let array_buf = document.return_arraybuf();
             let DD = new Date();
@@ -102,6 +110,7 @@ var input_options = new Vue({
                         'name': lane_name,
                         'buf' : buf
                     });
+                    this.$store.commit("edit_nowplaying",{"nowplaying":"recorded"});
                 })
                 
             });
